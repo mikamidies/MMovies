@@ -4,10 +4,14 @@
   --regular-first: 'Inter';
   --regular-sec: 'Karla';
   --decor: 'Anton';
+
+  --red: #c92502;
+  --red-dark: #891b02;
 }
 body {
   background: black;
   color: white;
+  font-family: var(--regular-first);
 }
 html {
   scroll-behavior: smooth;
