@@ -4,7 +4,7 @@
       <p class="suptitle">by mikamiDies</p>
 
       <h1 class="title">MFilms</h1>
-      <button class="btn">View now</button>
+      <a href="#grid" class="btn">View now</a>
     </div>
   </div>
 </template>
@@ -59,6 +59,7 @@ export default {}
   width: 180px;
   font-size: 18px;
   transition: 0.4s;
+  border-radius: 0;
 }
 .btn:focus,
 .btn:hover {
