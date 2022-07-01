@@ -21,7 +21,9 @@
       </div>
     </div>
 
-    <div class="container">
+    <TheLoading class="the-loading" v-if="$fetchState.pending" />
+
+    <div v-else class="container">
       <div v-if="searchInput !== ''" class="movie-grid" id="grid">
         <div
           v-for="(movie, index) in searchedMovies"
@@ -102,11 +104,13 @@
 
 <script>
 import axios from 'axios'
+import TheLoading from '../components/TheLoading.vue'
+
 import HomeHeader from '~/components/HomeHeader.vue'
 
 export default {
   name: 'IndexPage',
-  components: { HomeHeader },
+  components: { HomeHeader, TheLoading },
 
   data() {
     return {
@@ -124,6 +128,7 @@ export default {
       await this.searchMovies()
     }
   },
+  fetchDelay: 1000,
 
   methods: {
     async getMovies() {
@@ -154,6 +159,10 @@ export default {
 </script>
 
 <style scoped>
+.the-loading {
+  padding-top: 120px;
+  align-items: flex-start;
+}
 .movie-grid {
   padding: 60px 0 120px 0;
   display: grid;
