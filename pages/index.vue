@@ -1,8 +1,67 @@
 <template>
   <div>
     <HomeHeader />
+
     <div class="container">
-      <div class="movie-grid" id="grid">
+      <div class="search">
+        <input
+          v-model.lazy="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="search"
+          @keyup.enter="$fetch"
+        />
+        <button
+          @click="clearSearch"
+          v-show="searchInput !== ''"
+          class="clear-btn"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div v-if="searchInput !== ''" class="movie-grid" id="grid">
+        <div
+          v-for="(movie, index) in searchedMovies"
+          :key="index"
+          class="movie"
+        >
+          <div class="movie-img">
+            <img
+              :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+              alt=""
+            />
+            <p class="review">{{ movie.vote_average }}</p>
+            <div class="overview">
+              <p>{{ movie.overview }}</p>
+            </div>
+          </div>
+          <div class="info">
+            <p class="movie-title">
+              {{ movie.title.slice(0, 25) }}
+              <span v-if="movie.title.length > 25">...</span>
+            </p>
+            <p class="release">
+              Released:
+              {{
+                new Date(movie.release_date).toLocaleString('en-us', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              }}
+            </p>
+            <nuxt-link
+              class="btn"
+              :to="{ name: 'movie-movieid', params: { movieid: movie.id } }"
+              >More info</nuxt-link
+            >
+          </div>
+        </div>
+      </div>
+      <div v-else class="movie-grid" id="grid">
         <div v-for="(movie, index) in movies" :key="index" class="movie">
           <div class="movie-img">
             <img
@@ -29,7 +88,11 @@
                 })
               }}
             </p>
-            <nuxt-link class="btn" to="/">More info</nuxt-link>
+            <nuxt-link
+              class="btn"
+              :to="{ name: 'movie-movieid', params: { movieid: movie.id } }"
+              >More info</nuxt-link
+            >
           </div>
         </div>
       </div>
@@ -48,11 +111,18 @@ export default {
   data() {
     return {
       movies: [],
+      searchedMovies: [],
+      searchInput: '',
     }
   },
 
   async fetch() {
-    await this.getMovies()
+    if (this.searchInput === '') {
+      await this.getMovies()
+    }
+    if (this.searchInput !== '') {
+      await this.searchMovies()
+    }
   },
 
   methods: {
@@ -64,7 +134,20 @@ export default {
       result.data.results.forEach((movie) => {
         this.movies.push(movie)
       })
-      console.log(this.movie)
+    },
+    async searchMovies() {
+      const data = axios.get(
+        `https://api.themoviedb.org/3/search/movie?api_key=fc57c5f989e21306c73a93c5427caff0&page=1&query=${this.searchInput}`
+      )
+      const result = await data
+      result.data.results.forEach((movie) => {
+        this.searchedMovies.push(movie)
+      })
+    },
+
+    clearSearch() {
+      this.searchInput = ''
+      this.searchedMovies = []
     },
   },
 }
@@ -162,5 +245,23 @@ export default {
 }
 .movie {
   cursor: pointer;
+}
+.search {
+  padding: 2rem 0;
+}
+.search-input {
+  padding: 1rem;
+  border: none;
+  border-radius: 0;
+  font-size: 17px;
+}
+.clear-btn {
+  padding: 15px;
+  border: none;
+  border-radius: 0;
+  background: var(--red);
+  color: white;
+  font-weight: 500;
+  font-size: 18px;
 }
 </style>
