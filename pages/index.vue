@@ -30,72 +30,73 @@
           :key="index"
           class="movie"
         >
-          <div class="movie-img">
-            <img
-              :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-              alt=""
-            />
-            <p class="review">{{ movie.vote_average }}</p>
-            <div class="overview">
-              <p>{{ movie.overview }}</p>
+          <nuxt-link
+            :to="{ name: 'movie-movieid', params: { movieid: movie.id } }"
+          >
+            <div class="movie-img">
+              <img
+                :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+                alt=""
+              />
+              <p class="review">{{ movie.vote_average }}</p>
+              <div class="overview">
+                <p>{{ movie.overview }}</p>
+              </div>
             </div>
-          </div>
-          <div class="info">
-            <p class="movie-title">
-              {{ movie.title.slice(0, 25) }}
-              <span v-if="movie.title.length > 25">...</span>
-            </p>
-            <p class="release">
-              Released:
-              {{
-                new Date(movie.release_date).toLocaleString('en-us', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })
-              }}
-            </p>
-            <nuxt-link
-              class="btn"
-              :to="{ name: 'movie-movieid', params: { movieid: movie.id } }"
-              >More info</nuxt-link
-            >
-          </div>
+            <div class="info">
+              <p class="movie-title">
+                {{ movie.title.slice(0, 25) }}
+                <span v-if="movie.title.length > 25">...</span>
+              </p>
+              <p class="release">
+                Released:
+                {{
+                  new Date(movie.release_date).toLocaleString('en-us', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                }}
+              </p>
+              <button class="btn">More info</button>
+            </div>
+          </nuxt-link>
         </div>
       </div>
+
       <div v-else class="movie-grid" id="grid">
         <div v-for="(movie, index) in movies" :key="index" class="movie">
-          <div class="movie-img">
-            <img
-              :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-              alt=""
-            />
-            <p class="review">{{ movie.vote_average }}</p>
-            <div class="overview">
-              <p>{{ movie.overview }}</p>
+          <nuxt-link
+            :to="{ name: 'movie-movieid', params: { movieid: movie.id } }"
+          >
+            <div class="movie-img">
+              <img
+                :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+                alt=""
+              />
+              <p class="review">{{ movie.vote_average }}</p>
+              <div class="overview">
+                <p>{{ movie.overview }}</p>
+              </div>
             </div>
-          </div>
-          <div class="info">
-            <p class="movie-title">
-              {{ movie.title.slice(0, 25) }}
-              <span v-if="movie.title.length > 25">...</span>
-            </p>
-            <p class="release">
-              Released:
-              {{
-                new Date(movie.release_date).toLocaleString('en-us', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })
-              }}
-            </p>
-            <nuxt-link
-              class="btn"
-              :to="{ name: 'movie-movieid', params: { movieid: movie.id } }"
-              >More info</nuxt-link
-            >
-          </div>
+            <div class="info">
+              <p class="movie-title">
+                {{ movie.title.slice(0, 25) }}
+                <span v-if="movie.title.length > 25">...</span>
+              </p>
+              <p class="release">
+                Released:
+                {{
+                  new Date(movie.release_date).toLocaleString('en-us', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                }}
+              </p>
+              <button class="btn">More info</button>
+            </div>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -254,6 +255,9 @@ export default {
 }
 .movie {
   cursor: pointer;
+}
+.movie a {
+  color: white;
 }
 .search {
   padding: 2rem 0;
